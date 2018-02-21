@@ -1,0 +1,7 @@
+terraform.tfvars
+bak/
+temp/
+.terraform/
+terraform.tf*
+*.pub
+*key

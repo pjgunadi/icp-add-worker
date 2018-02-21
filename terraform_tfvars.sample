@@ -1,0 +1,41 @@
+vsphere_user="<vsphere-login-user>"
+vsphere_password="<vsphere-login-password>"
+vsphere_server="<vsphere-server-ipaddress>"
+datacenter="<vsphere-datacenter-name>"
+datastore=["<datastore1>", "<datastore2>", "<datastore3>"]
+resource_pool="<cluster-name>/Resources"
+network="VM Network"                            #Replace with your Virtua Switch
+template = {                                    #VM Template list in vSphere:
+    "redhat"="rhel74_base"                      #Template value use key/value pair: "<key>"="<template-name-in-vsphere>"
+    "ubuntu"="ubuntu1604_base"
+}
+osfamily="ubuntu"                               #Selected template key
+ssh_user="ubuntu-user"                          #Login user in selected template
+ssh_password="your-password"                    #Login password in selected template
+vm_domain="domain.local"                        #OS Domain
+dns_list = ["x.x.x.x"]                          #DNS Servers
+timezone = "Asia/Singapore"                     #OS Time Zone
+instance_prefix="icpwk"                         #VM Instance name prefix
+vm_private_key_file="vmware-key"                #Existing Private Key file to access ICP Boot node
+vm_public_key_file="vmware_key.pub"             #VM Public key file to be saved on local
+icp_boot_node_ip="192.168.66.81"                #ICP Boot Node IP Address, usually the master node
+icp_install_path="/opt/ibm/cluster"             #Existing installed ICP path in Boot node, default is /opt/ibm/cluster
+icp_private_key_file="/opt/ibm/cluster/ssh_key" #Existing path of ICP ssh_key, default /opt/ibm/cluster/ssh_key
+icp_public_key_file="icp_key.pub"               #Local path to save ICP public key
+icp_version="2.1.0.1-ee"                        #ICP Version #Community: 2.1.0.1 #Enterprise: 2.1.0.1-ee
+#icp_source_server="x.x.x.x"                    #SFTP Server for Enterprise Edition
+#icp_source_user="ftp-user"                     #SFTP Login user
+#icp_source_password="ftp-password"             #SFTP Login password
+#icp_source_path="path-to-icp-enterprise-file"  #Download file location in SFTP server
+existing_workers= ["x.x.x.x","y.y.y.y"]         #List of existing worker node IPs
+worker = {                                      #VM Specification for ICP Worker node
+    nodes       = "2"                           #Number of worker nodes to be added
+    name        = "worker"
+    cpu_cores   = "8"
+    kubelet_lv  = "10"                          #Size of Kubelet Volume
+    docker_lv   = "89"                          #Size for Docker Volume
+    memory      = "8192"
+    ipaddresses = "192.168.66.93,192.168.66.94" #Worker Node IP Addresses separated with comma
+    netmask     = "24"
+    gateway     = "192.168.66.1"
+}
