@@ -168,7 +168,7 @@ resource "vsphere_virtual_machine" "worker" {
   }
   provisioner "local-exec" {
     when    = "destroy"
-    command = "ssh -i ${var.vm_private_key_file} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_worker.sh; /tmp/delete_worker.sh ${var.icp_version} ${self.default_ip_address}\""
+    command = "ssh -i ${var.vm_private_key_file} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_worker.sh; /tmp/delete_worker.sh ${var.icp_version} ${self.default_ip_address}\"; echo done"
   }
 }
 //Add Worker from Boot Node
