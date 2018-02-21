@@ -1,4 +1,4 @@
-# Terraform Template for Adding ICP Worker Node in VMware
+# Terraform Template for Add/Remove ICP Worker Node in VMware
 
 ## Use Case
 - IBM Cloud Private (ICP) has already been installed in a VMware Cluster
@@ -68,5 +68,7 @@ terraform apply -auto-approve
 Existing worker nodes cannot be imported in Terraform as the imported vSphere node can't handle the [Clone block](https://github.com/terraform-providers/terraform-provider-vsphere/issues/333)
 
 ## Credit
-The scaling script reuse existing scripts from [ibm-cloud-architecture/terraform-module-icp-deploy](https://github.com/ibm-cloud-architecture/terraform-module-icp-deploy)
-
+The scaling script reuse existing scripts from [ibm-cloud-architecture/terraform-module-icp-deploy](https://github.com/ibm-cloud-architecture/terraform-module-icp-deploy) with slight modification:
+- use kubectl drain before delete worker node
+- use ICP boot node delete script to remove worker node
+- execution of deletion script is in VM resource
