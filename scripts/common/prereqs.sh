@@ -20,9 +20,6 @@ fi
 echo "Operating System is $OSLEVEL"
 
 ubuntu_install(){
-  #Update hostname
-#  sudo hostname $HOSTNAME
-#  sudo echo $HOSTNAME > /etc/hostname
   echo "vm.max_map_count=262144" | sudo tee /etc/sysctl.d/90-icp.conf
   echo "net.ipv4.ip_local_port_range=10240 60999" | sudo tee -a /etc/sysctl.d/90-icp.conf
   sudo sysctl -p /etc/sysctl.d/90-icp.conf
@@ -30,9 +27,12 @@ ubuntu_install(){
   sudo apt-get install -y apt-transport-https nfs-common ca-certificates curl software-properties-common
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  sudo apt-get update -y
-  sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq
-  sudo apt-get -y upgrade
+  ## Attempt to avoid probelems when dpkg requires configuration
+  export DEBIAN_FRONTEND=noninteractive
+  export DEBIAN_PRIORITY=critical
+  sudo -E apt-get -y update
+  sudo -E apt-get -yq -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+  #sudo apt-get -y upgrade
   sudo apt-get install -y python python-pip socat unzip moreutils glusterfs-client
   sudo service iptables stop
   sudo ufw disable
@@ -45,8 +45,6 @@ ubuntu_install(){
   #echo y | pip uninstall docker-py
 }
 crlinux_install(){
-  #Update hostname
-#  hostnamectl set-hostname $HOSTNAME
   #Disable SELINUX
   sudo sed -i s/^SELINUX=enforcing/SELINUX=disabled/ /etc/selinux/config && sudo setenforce 0
   sudo systemctl disable firewalld
